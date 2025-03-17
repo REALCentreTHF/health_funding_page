@@ -1,4 +1,5 @@
-funding_page <- 'Latest funding figures for England
+funding_page <- 'Health care funding
+Latest funding figures for England
 
 The REAL Centre explores the latest health care funding figures for England. This includes how the funding figures compare to historical levels and how it stacks up against what is needed to meet the pressures facing health services. 
 This page was originally published on 20 March 2023 and is updated at every fiscal event. This analysis is based on the [add relevant OBR forecast] from the Office for Budget Responsibility (OBR) and [add relevant Treasury figures]. 
@@ -50,4 +51,5 @@ Conclusion
 The additional funding announced for this year and next will help to stabilise services and could enable the government to make some progress on its ambitions for the NHS. The increase in capital investment is particularly welcome and begins to reverse years of underinvestment that has reduced NHS productivity and resulted in a spiralling backlog of maintenance and repairs. 
 However, several unknowns remain, including the impact of future staff pay increases and the extent to which the government will cover the cost of the rise to employer’s National Insurance contributions. This could yet reduce the spending power of the additional funding announced and have a substantial impact on the 2025/26 budget. 
 More broadly, these funding increases will need to be sustained throughout the rest of the parliament and beyond to meet rising demand and deliver improvements to services. Improving productivity will also need to be a key focus to ensure the new funding stretches as far as possible and to meet a challenging productivity target.
-The focus now shifts to next year’s Spending Review and the government’s 10-year health plan to deliver the investment and reform needed to meet the government’s ambitions to improve the NHS.'
+The focus now shifts to next year’s Spending Review and the government’s 10-year health plan to deliver the investment and reform needed to meet the government’s ambitions to improve the NHS.
+'
