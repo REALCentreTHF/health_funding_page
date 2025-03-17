@@ -1,3 +1,4 @@
+setwd('/Users/zeyadissa/health_funding_page')
 source('src/main.R')
 
 ui <- shiny::fluidPage(
@@ -8,8 +9,8 @@ ui <- shiny::fluidPage(
                   offset = 3,
                   shiny::h1('PRESS ME'),
                   shiny::h2('This is a simple test run'),
-                  downloadButton("dl", "Download"),
-                  shiny::actionButton("generate",label = "Generate Funding Page"),
+                  downloadButton("dl", "Download Data"),
+                  shiny::downloadButton("dl2",label = "Generate Funding Page"),
                   tags$style(type='text/css', "#button { vertical-align- middle; height- 50px; width- 100%; font-size- 30px;}"))
     )
   )
@@ -39,7 +40,14 @@ server <- function(input, output) {
     content = function(file){
       openxlsx::saveWorkbook(wb, file = file,overwrite = T)},
     contentType = "file/xlsx"
-    
+  )
+  
+  output$dl2 <- downloadHandler(
+    filename = function(){
+      paste0(Sys.Date(),'healthcare_funding_page.txt')},
+    content = function(file){
+      writeLines(output_funding_page,file)
+      }
   )
 
   }

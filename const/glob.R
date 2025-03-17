@@ -42,3 +42,6 @@ govt_list <- list(
   'Starmer'=2024:2025
 )
 
+#need this for everything
+source('const/disclaimer.R')
+source('const/healthcare_funding_page.R')
