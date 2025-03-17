@@ -3,6 +3,7 @@
 #These are the basic parameters that need to go into the list.
 #delete any of these everything breaks. 
 latest_efo_month <- 'October'
+latest_efs_month <- 'September'
 latest_pop_year <- '2023'
 latest_pop_proj_year <- '2022'
 latest_pesa_year <- '2024'
@@ -12,7 +13,6 @@ latest_outtrun_year <- 2023
 pensions_adjustment_value = 2.9
 start_year <- 2019
 end_year <- 2025
-
 
 #FORCED inputs for posterity
 #Date = Fall 2024 Budget. These can either be extracted automatically or inputted
@@ -29,6 +29,7 @@ pop_link <- 'https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmi
 pop_proj_link <- 'https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationprojections/datasets/tablea11principalprojectionuksummary'
 pesa_url <- 'https://www.gov.uk/government/collections/public-expenditure-statistical-analyses-pesa'
 old_deflator_url <- 'https://www.ons.gov.uk/generator?format=csv&uri=/economy/grossdomesticproductgdp/timeseries/ihys/pn2'
+efs_url <- 'https://obr.uk/frs/fiscal-risks-and-sustainability-september-2024/'
 
 #Governments.Older values should not change unless a time traveller alters election results
 #Note. The logic behind the start / end year selection needs to be examined.

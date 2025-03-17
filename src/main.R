@@ -47,4 +47,4 @@ tryCatch(
 )
 
 #Clean up environment
-rm(list=ls()[!grepl(patter='output|fig',x=ls())])
+rm(list=ls()[!grepl(pattern='output|fig',x=ls())])
