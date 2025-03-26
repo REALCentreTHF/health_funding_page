@@ -43,23 +43,12 @@ output_budget_data <- test2 |>
 
 #OLD DATASET 2017 ---------
 
-dhsc_tdel_old <- dhsc_2013_17_data[[1]] |> 
-  dplyr::filter(department == 'Health') |> 
+test2_old<-historic_dhsc_data |> 
+  dplyr::mutate(values=as.numeric(values)) |> 
+  dplyr::select(!pesa_year) |> 
+  rbind(nhs_rdel) |> 
+  dplyr::filter(date <= latest_outtrun_year-4) |> 
   dplyr::select(!department) |> 
-  dplyr::filter(date >= 2013 & date <= 2018)
-
-cdel_old <- dhsc_2013_17_data[[2]] |> 
-  dplyr::filter(department == 'Health')|> 
-  dplyr::select(!department) |> 
-  dplyr::filter(date >= 2013 & date <= 2018)
-
-dhsc_rdel_old <- dhsc_2013_17_data[[3]] |> 
-  dplyr::filter(department == 'Health')|> 
-  dplyr::select(!department) |> 
-  dplyr::filter(date >= 2013 & date <= 2018)
-
-test2_old<-rbind(dhsc_tdel_old,cdel_old,dhsc_rdel_old,nhs_rdel |> dplyr::filter(date >= 2013 & date <= 2018)) |> 
-  dplyr::filter(date <= latest_outtrun_year) |> 
   tidyr::pivot_wider(names_from=pod,values_from=values) |> 
   dplyr::rowwise() |> 
   janitor::clean_names() |> 
@@ -68,8 +57,11 @@ test2_old<-rbind(dhsc_tdel_old,cdel_old,dhsc_rdel_old,nhs_rdel |> dplyr::filter(
       date <= latest_outtrun_year ~ 'outtrun',
       T ~ 'planned'
     ),
+    dhsc_tdel = dplyr::case_when(is.na(dhsc_tdel)==T ~ cdel + dhsc_rdel,
+                                 T ~ dhsc_tdel),
     other_rdel = dhsc_rdel - nhse_rdel
-  ) 
+  ) |> 
+  dplyr::filter(date >= 2013)
 
 output_budget_data_old <- test2_old |> 
   tidyr::pivot_longer(
