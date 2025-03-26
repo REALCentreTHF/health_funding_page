@@ -2,7 +2,7 @@
 
 #These are the basic parameters that need to go into the list.
 #delete any of these everything breaks. 
-latest_efo_month <- 'October'
+latest_efo_month <- 'March'
 latest_efs_month <- 'September'
 latest_pop_year <- '2023'
 latest_pop_proj_year <- '2022'
@@ -18,10 +18,10 @@ end_year <- 2025
 #Date = Fall 2024 Budget. These can either be extracted automatically or inputted
 #in manually. i have kept the manual as default just to check. if this does not
 #match the actuals extracted, it should throw an error.
-planned_dhsc_tdel <- c(201900,214100)
-planned_cdel <- c(11800,13600)
-planned_dhsc_rdel <- c(190100,200500)
-planned_nhs_rdel <- c(181400,192000)
+planned_dhsc_tdel <- c(204900,215600)
+planned_cdel <- c(11600,13600)
+planned_dhsc_rdel <- c(193300,202000)
+planned_nhs_rdel <- c(183600,193500)
 
 # Non-adjustable globals ---------
 efo_link <- 'https://obr.uk/efo/'
