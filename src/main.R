@@ -48,3 +48,6 @@ tryCatch(
 
 #Clean up environment
 rm(list=ls()[!grepl(pattern='output|fig',x=ls())])
+write.csv(output_budget_data,'output/budget_data.csv')
+write.csv(output_cagr_table,'output/cagr_table.csv')
+write.csv(deflator,'output/deflator.csv')
