@@ -4,8 +4,8 @@ pesa_data2<-pesa_data |>
   dplyr::mutate(values=as.numeric(values)) |> 
   dplyr::select(!pesa_year) |> 
   rbind(nhs_rdel) |> 
-  dplyr::filter(date <= latest_outtrun_year-4) |> 
   dplyr::select(!department) |> 
+  dplyr::filter(date <= latest_outtrun_year) |> 
   rbind(planned_budget_data,pension_adjustments) |> 
   tidyr::pivot_wider(names_from=pod,values_from=values) |> 
   dplyr::rowwise() |> 
