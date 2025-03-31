@@ -52,10 +52,10 @@ GetData <- function(){
     ) |> 
     dplyr::add_row(
       start_date = 1979,
-      start_tdel = 40.2,
+      start_tdel = 0,
       govt_simple = 'Long-run Pre-Covid',
       end_date = fig_3_max_year,
-      end_tdel = 171,
+      end_tdel = 0,
       cagr = max_precovid_value
     )
   return(dat4)
