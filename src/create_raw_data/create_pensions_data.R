@@ -8,7 +8,7 @@ pension_adjustments <- expand.grid(
 ) |> 
   dplyr::mutate(
     values=dplyr::case_when(
-      date %in% c(2024,2025) ~ pensions_adjustment_value + 1.9,
+      date %in% c(2024,2025) ~ pensions_adjustment_value + pensions_adjustment_value_2,
       T ~ pensions_adjustment_value
     )
   )

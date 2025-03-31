@@ -10,7 +10,8 @@ latest_pesa_year <- '2024'
 latest_budget_name <- 'Spring 2025 Budget'
 baseline_year <- 2024
 latest_outtrun_year <- 2023
-pensions_adjustment_value = 2.9
+pensions_adjustment_value = 2.851
+pensions_adjustment_value_2 = 1.966
 start_year <- 2019
 end_year <- 2025
 
