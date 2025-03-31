@@ -18,7 +18,7 @@ GetData <- function(){
     .f = function(.x){
       if(tools::file_ext(.x) == 'ods'){
         temp <- tempfile()
-        utils::download.file(.x, temp)
+        utils::download.file(.x, temp,mode='wb')
         sheet<-readODS::list_ods_sheets(temp)
         sheet_name <- sheet[grepl(pattern='1.5|1_5',sheet)]
         data <- readODS::read_ods(temp, sheet = sheet_name)
@@ -59,7 +59,7 @@ GetData <- function(){
     .f = function(.x){
       if(tools::file_ext(.x) == 'ods'){
         temp <- tempfile()
-        utils::download.file(.x, temp)
+        utils::download.file(.x, temp,mode='wb')
         sheet<-readODS::list_ods_sheets(temp)
         sheet_name <- sheet[grepl(pattern='1.8$|1_8$',sheet)]
         data <- readODS::read_ods(temp, sheet = sheet_name)
@@ -106,7 +106,7 @@ GetData <- function(){
     .f = function(.x){
       if(tools::file_ext(.x) == 'ods'){
         temp <- tempfile()
-        utils::download.file(.x, temp)
+        utils::download.file(.x, temp,mode='wb')
         sheet<-readODS::list_ods_sheets(temp)
         sheet_name <- sheet[grepl(pattern='1.10|1_10',sheet)]
         data <- readODS::read_ods(temp, sheet = sheet_name)
