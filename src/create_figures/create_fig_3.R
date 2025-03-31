@@ -21,6 +21,8 @@ GetData <- function(){
       mutate_col = 'dhsc_tdel'
     )
   
+  max_precovid_value <- (dat2[dat2$date == fig_3_max_year,]$dhsc_tdel / dat2[dat2$date == min(dat2$date),]$dhsc_tdel)^(1/(fig_3_max_year - min(dat2$date)-1))-1
+  
   dat3 <- dat2 |> 
     dplyr::group_by(govt_simple) |> 
     dplyr::filter(date == min(date)|
@@ -47,6 +49,14 @@ GetData <- function(){
     dplyr::rowwise() |> 
     dplyr::mutate(
       cagr = (end_tdel /start_tdel)^(1/(end_date-start_date))-1
+    ) |> 
+    dplyr::add_row(
+      start_date = 1979,
+      start_tdel = 40.2,
+      govt_simple = 'Long-run Pre-Covid',
+      end_date = fig_3_max_year,
+      end_tdel = 171,
+      cagr = max_precovid_value
     )
   return(dat4)
 }

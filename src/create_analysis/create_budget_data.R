@@ -23,7 +23,8 @@ pesa_data2<-pesa_data |>
   dplyr::mutate(
     other_rdel = dhsc_rdel - nhse_rdel,
     dhsc_rdel_less_pensions = dhsc_rdel - pensions,
-    nhse_rdel_less_pensions = nhse_rdel - pensions
+    nhse_rdel_less_pensions = nhse_rdel - pensions, 
+    dhsc_tdel_less_pensions = dhsc_tdel - pensions
   ) |> 
   dplyr::filter(date >= 2013) 
 
