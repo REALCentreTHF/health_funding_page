@@ -5,10 +5,11 @@ GetData <- function(){
     dplyr::select(date,cash_values) |> 
     dplyr::rename(dhsc_tdel = cash_values) |> 
     dplyr::mutate(dhsc_tdel = dhsc_tdel / 1000) |> 
-    dplyr::filter(date > max(historic_dhsc_tdel_data$date))
+    dplyr::filter(date > 2014)
   
   dat2 <- historic_dhsc_tdel_data |> 
     dplyr::select(!type) |> 
+    dplyr::filter(date <= 2014) |> 
     rbind(dat1) |> 
     dplyr::rowwise() |> 
     dplyr::mutate(

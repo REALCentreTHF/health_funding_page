@@ -1,8 +1,12 @@
 GetData <- function(){
   
   test<-population_data |> 
+    rbind(pop_proj_data) |> 
     dplyr::filter(country == 'E') |> 
-    dplyr::mutate(age = as.integer(age)) |> 
+    dplyr::mutate(age = dplyr::case_when(
+                    is.na(as.integer(age)) == T | as.integer(age) >= 101 ~ 101,
+                    T ~ as.integer(age)
+                  )) |> 
     dplyr::left_join(age_cost_data) |> 
     dplyr::mutate(
       age_cost_weight = age_cost_weight/age_cost_data[age_cost_data$age == 30,]$age_cost_weight,
@@ -17,7 +21,7 @@ GetData <- function(){
     )
   
   test2 <- output_budget_data |> 
-    dplyr::filter(budget_type == 'nhse_rdel') |> 
+    dplyr::filter(budget_type == 'nhse_rdel_less_pensions') |> 
     dplyr::select(date,real_values,cash_values) |> 
     dplyr::left_join(test) |> 
     dplyr::mutate(

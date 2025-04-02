@@ -21,6 +21,7 @@ pesa_data2<-pesa_data |>
   ) |> 
   janitor::clean_names() |> 
   dplyr::mutate(
+    pensions = 1000 * pensions,
     other_rdel = dhsc_rdel - nhse_rdel,
     dhsc_rdel_less_pensions = dhsc_rdel - pensions,
     nhse_rdel_less_pensions = nhse_rdel - pensions, 
@@ -36,7 +37,7 @@ pesa_data3 <- pesa_data2 |>
   ) |>
   dplyr::mutate(real_values = cash_values) |> 
   CashToReal(
-    deflator_data = deflator |> dplyr::select(!type),
+    deflator_data = old_deflator_series,
     baseline_year = baseline_year,
     mutate_col = 'real_values'
   ) 

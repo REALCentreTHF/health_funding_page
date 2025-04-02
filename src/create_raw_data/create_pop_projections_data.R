@@ -1,17 +1,20 @@
 CreateData <- function() {
-  pop_proj_link2 <- Rpublic::extract_links(pop_proj_link,latest_pop_proj_year)
-  data <- Rpublic::extract_sheets(paste0('www.ons.gov.uk/',pop_proj_link2),'PERSONS')
-  dat <- data[["PERSONS"]]
-  names(dat) <- dat[6,] 
+  dat <- read.csv('const/pop_proj_data.csv') |> 
+    tidyr::pivot_longer(
+      cols = !c(age,sex),
+      names_to='date',
+      values_to='population'
+    ) |> 
+    dplyr::group_by(age,date) |> 
+    dplyr::summarise(population=sum(population,na.rm=T)) |> 
+    dplyr::mutate(
+      country = 'E',
+      type = 'midyear',
+      date = as.integer(substr(date,2,5))
+    ) |> 
+    dplyr::filter(date > 2023)
 
-  dat2 <- dat |> 
-    dplyr::filter(Components == 'Population at end') |> 
-    dplyr::mutate(type = 'midyear') |> 
-    dplyr::select(!c(1:2)) |> 
-    tidyr::pivot_longer(cols=!type,names_to='date',values_to='projected_population') |> 
-    dplyr::mutate(projected_population = as.numeric(projected_population))
-  
-  return(dat2)
+  return(dat)
 }
 
 pop_proj_data <- CreateData()
