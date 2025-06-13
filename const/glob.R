@@ -7,13 +7,14 @@ latest_efs_month <- 'September'
 latest_pop_year <- '2023'
 latest_pop_proj_year <- '2022'
 latest_pesa_year <- '2024'
-latest_budget_name <- 'Spring 2025 Budget'
+latest_budget_name <- 'Spending Review'
 baseline_year <- 2024
+latest_efo_year <- 2025
 latest_outtrun_year <- 2023
 pensions_adjustment_value = 2.851
 pensions_adjustment_value_2 = 1.966
 start_year <- 2013
-end_year <- 2025
+end_year <- 2028
 #THIS is the year from which fig4 takes the cagrs, starting from 79
 fig_3_max_year <- 2019
 
@@ -21,10 +22,10 @@ fig_3_max_year <- 2019
 #Date = Fall 2024 Budget. These can either be extracted automatically or inputted
 #in manually. i have kept the manual as default just to check. if this does not
 #match the actuals extracted, it should throw an error.
-planned_dhsc_tdel <- c(204900,215600)
-planned_cdel <- c(11600,13600)
-planned_dhsc_rdel <- c(193300,202000)
-planned_nhs_rdel <- c(183600,193500)
+planned_dhsc_tdel <- c(204900,215600,225000,234900,246700)
+planned_cdel <- c(11600,13600,14000,13500,14800)
+planned_dhsc_rdel <- c(193300,202000,211000,2213000,232000)
+planned_nhs_rdel <- c(186800,195600,204900,215400,226100)
 
 # Non-adjustable globals ---------
 efo_link <- 'https://obr.uk/efo/'
