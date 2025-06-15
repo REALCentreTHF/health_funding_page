@@ -6,13 +6,14 @@ latest_efo_month <- 'March'
 latest_efs_month <- 'September'
 latest_pop_year <- '2023'
 latest_pop_proj_year <- '2022'
-latest_pesa_year <- '2024'
+latest_pesa_year <- '2025'
 latest_budget_name <- 'Spending Review'
-baseline_year <- 2024
+baseline_year <- 2025
 latest_efo_year <- 2025
 latest_outtrun_year <- 2023
 pensions_adjustment_value = 2.851
-pensions_adjustment_value_2 = 1.966
+pensions_adjustment_value_2 = 1.965
+nics_adjustment_value <- 1.427
 start_year <- 2013
 end_year <- 2028
 #THIS is the year from which fig4 takes the cagrs, starting from 79
@@ -40,11 +41,11 @@ historic_dhsc_tdel_url <- 'https://researchbriefings.files.parliament.uk/documen
 #Fig 3. Doesn't align with it because of the way the selection occurs. 
 govt_list <- list(
   'Thatcher & Major'=1979:1996,
-  'Blair & Brown'=1997:2009 ,
-  'Coalition'=2010:2014,
-  'Cameron & May'=2015:2018,
-  'Johnson, Truss & Sunak'=2019:2023,
-  'Starmer'=2024:2028
+  'Blair & Brown'=1996:2009 ,
+  'Coalition'=2009:2014,
+  'Cameron & May'=2014:2018,
+  'Johnson, Truss & Sunak'=2018:2023,
+  'Starmer'=2023:2028
 )
 
 #need this for everything

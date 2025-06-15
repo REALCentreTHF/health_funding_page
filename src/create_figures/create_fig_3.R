@@ -1,25 +1,35 @@
 GetData <- function(){
   
   dat1 <- output_budget_data |> 
-    dplyr::filter(budget_type == 'dhsc_tdel') |> 
+    dplyr::filter(budget_type == 'dhsc_tdel_less_pensions') |> 
     dplyr::select(date,cash_values) |> 
     dplyr::rename(dhsc_tdel = cash_values) |> 
     dplyr::mutate(dhsc_tdel = dhsc_tdel / 1000) |> 
     dplyr::filter(date > 2014)
   
-  dat2 <- historic_dhsc_tdel_data |> 
-    dplyr::select(!type) |> 
-    dplyr::filter(date <= 2014) |> 
-    rbind(dat1) |> 
-    dplyr::rowwise() |> 
-    dplyr::mutate(
-      govt = unlist(govt_list)[grepl(pattern = date,x = unlist(govt_list))] |> names(),
-      govt_simple = gsub('[[:digit:]]+', '', govt)
+  dat2 <- purrr::map(
+    .x = govt_list,
+    .f = function(.x){
+      out <- historic_dhsc_tdel_data |> 
+        dplyr::select(!type) |> 
+        dplyr::filter(date <= 2014) |> 
+        rbind(dat1) |> 
+        dplyr::filter(date %in% .x) |> 
+        dplyr::rowwise() |> 
+        CashToReal(
+          deflator_data = old_deflator_series,
+          baseline_year = baseline_year,
+          mutate_col = 'dhsc_tdel'
+        ) 
+        
+      return(out)
+    }
+  ) |> 
+    dplyr::bind_rows(
+      .id = 'id'
     ) |> 
-    CashToReal(
-      deflator_data = old_deflator_series,
-      baseline_year = baseline_year,
-      mutate_col = 'dhsc_tdel'
+    dplyr::rename(
+      govt_simple='id'
     )
   
   max_precovid_value <- (dat2[dat2$date == fig_3_max_year,]$dhsc_tdel / dat2[dat2$date == min(dat2$date),]$dhsc_tdel)^(1/(fig_3_max_year - min(dat2$date)-1))-1
