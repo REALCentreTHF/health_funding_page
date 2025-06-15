@@ -24,7 +24,7 @@ fig_3_max_year <- 2019
 #match the actuals extracted, it should throw an error.
 planned_dhsc_tdel <- c(204900,215600,225000,234900,246700)
 planned_cdel <- c(11600,13600,14000,13500,14800)
-planned_dhsc_rdel <- c(193300,202000,211000,2213000,232000)
+planned_dhsc_rdel <- c(193300,202000,211000,221300,232000)
 planned_nhs_rdel <- c(186800,195600,204900,215400,226100)
 
 # Non-adjustable globals ---------
@@ -44,7 +44,7 @@ govt_list <- list(
   'Coalition'=2010:2014,
   'Cameron & May'=2015:2018,
   'Johnson, Truss & Sunak'=2019:2023,
-  'Starmer'=2024:2025
+  'Starmer'=2024:2028
 )
 
 #need this for everything
