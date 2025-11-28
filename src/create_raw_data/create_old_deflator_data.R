@@ -1,6 +1,6 @@
 GetData <- function(){
   
-  old_deflator_link <- Rpublic::extract_links(old_deflator_url,paste0(latest_efo_month,'-',latest_efo_year),ignore.case=T)
+  old_deflator_link <- Rpublic::extract_links(old_deflator_url,paste0('september','-',latest_efo_year),ignore.case=T)
   
   old_deflator_link2 <- Rpublic::extract_links(paste0('https://www.gov.uk/',old_deflator_link),'.xls')
   

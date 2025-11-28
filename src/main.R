@@ -1,4 +1,4 @@
-#These need to run in advance of everything as global options
+#These need to run in advance of everything as global options?
 source('const/glob.R')
 source('src/functions.R')
 
