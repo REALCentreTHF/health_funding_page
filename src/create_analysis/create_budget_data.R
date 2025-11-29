@@ -6,7 +6,7 @@ pesa_data2<-pesa_data |>
   rbind(nhs_rdel) |> 
   dplyr::select(!department) |> 
   dplyr::filter(date <= latest_outtrun_year) |> 
-  rbind(planned_budget_data,pension_adjustments,nics_adjustments) |> 
+  rbind(planned_budget_data,pension_adjustments,nics_adjustments,other_adjustments_data) |> 
   tidyr::pivot_wider(names_from=pod,values_from=values) |> 
   dplyr::rowwise() |> 
   janitor::clean_names() |> 
@@ -21,12 +21,12 @@ pesa_data2<-pesa_data |>
   ) |> 
   janitor::clean_names() |> 
   dplyr::mutate(
-    pensions = 1000 * pensions,
-    nics = 1000 * nics,
+    pensions =  pensions,
+    nics = nics,
     other_rdel = dhsc_rdel - nhse_rdel,
-    dhsc_rdel_less_pensions = dhsc_rdel - pensions - nics,
-    nhse_rdel_less_pensions = nhse_rdel - pensions - nics, 
-    dhsc_tdel_less_pensions = dhsc_tdel - pensions - nics
+    dhsc_rdel_less_pensions = dhsc_rdel - pensions - nics - adjustments,
+    nhse_rdel_less_pensions = nhse_rdel - pensions - nics - adjustments, 
+    dhsc_tdel_less_pensions = dhsc_tdel - pensions - nics - adjustments
   ) |> 
   dplyr::filter(date >= 2013) 
 

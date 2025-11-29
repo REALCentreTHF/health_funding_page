@@ -21,11 +21,10 @@ nics_adjustment_value <- 1.427
 #in manually. i have kept the manual as default just to check. if this does not
 #match the actuals extracted, it should throw an error.
 planned_cdel <- c(11600,13600,14000,13800,14800) #updated
-planned_dhsc_rdel_less_adjustments <- c(193200,203400,211400,221300,231200) #updated
+planned_dhsc_rdel <- c(193200,203400,211400,221300,231200) #updated
 planned_nhs_rdel <- c(186800,195600,204900,215400,226100)
-adjustments <- c(0,-1500,0,0,0)
+adjustments <- c(rep(0,12),-210,-1210,rep(-1610,2))
 #adjustments
-planned_dhsc_rdel <- planned_dhsc_rdel_less_adjustments + adjustments
 planned_dhsc_tdel <- planned_cdel + planned_dhsc_rdel 
 
 

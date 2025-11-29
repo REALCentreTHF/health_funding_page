@@ -35,17 +35,6 @@ tryCatch(
         'This means the figures cannot be run due to an error in /src/create_figures/')}
 )
 
-#Step 4: Jinjar
-tryCatch(
-  purrr::map(.x = fs::dir_ls('src/create_document'),
-             .f = source),
-  error = function(e){
-    cat("An error occurred:", 
-        conditionMessage(e),
-        "\n",
-        'This means the figures cannot be run due to an error in /src/create_document/')}
-)
-
 write.csv(output_budget_data,'output/budget_data.csv')
 write.csv(output_cagr_table,'output/cagr_table.csv')
 write.csv(fig_3,'output/fig_3.csv')
@@ -54,4 +43,3 @@ write.csv(deflator,'output/deflator.csv')
 
 #Clean up environment
 rm(list=ls()[!grepl(pattern='output|fig',x=ls())])
-
