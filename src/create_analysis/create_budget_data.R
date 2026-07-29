@@ -38,7 +38,7 @@ pesa_data3 <- pesa_data2 |>
   ) |>
   dplyr::mutate(real_values = cash_values) |> 
   CashToReal(
-    deflator_data = old_deflator_series,
+    deflator_data = deflator |> dplyr::select(!type),
     baseline_year = baseline_year,
     mutate_col = 'real_values'
   ) 
