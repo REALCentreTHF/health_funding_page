@@ -1,9 +1,6 @@
 GetData <- function(){
-  
-  efs_links <- Rpublic::extract_links(efs_url,tolower(latest_efs_month))
-  efs_links2 <- Rpublic::extract_links(efs_links,'chapter-3/')
 
-  dat<-Rpublic::extract_sheets(efs_links2,'C3.11') |> 
+  dat<-Rpublic::extract_sheets(efs_url,'C3.11') |> 
     _[['C3.11']] |> 
     _[c(25:26),-c(1:2)] |>
     t() |> 
