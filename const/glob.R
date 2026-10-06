@@ -21,9 +21,9 @@ nics_adjustment_value <- 1.427
 #in manually. i have kept the manual as default just to check. if this does not
 #match the actuals extracted, it should throw an error.
 planned_cdel <- c(11600,13600,14000,13800,14800) #updated
-planned_dhsc_rdel <- c(193200,203400,211400,221300,231200) #updated
+planned_dhsc_rdel <- c(193200,204500,211400,221300,231200) #updated
 planned_nhs_rdel <- c(186800,195600,204900,215400,226100)
-adjustments <- c(rep(0,12),-210,-1210,rep(-1610,2))
+adjustments <- c(rep(0,12),-1110,-1210,rep(-1610,2))
 #adjustments
 planned_dhsc_tdel <- planned_cdel + planned_dhsc_rdel 
 
@@ -44,7 +44,7 @@ start_year <- 2013
 end_year <- 2028
 #THIS is the year from which fig4 takes the cagrs, starting from 79
 fig_3_max_year <- 2019
-efs_url <- 'https://obr.uk/frs/fiscal-risks-and-sustainability-july-2025/'
+efs_url <- 'https://obr.uk/download/september-2024-fiscal-risks-and-sustainability-charts-and-tables-chapter-3/?tmstv=1790974956'
 
 # Non-adjustable globals ---------
 efo_link <- 'https://obr.uk/efo/'
