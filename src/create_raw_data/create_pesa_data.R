@@ -92,16 +92,31 @@ GetData <- function(){
   pesa_link_cdel2 <- purrr::map(
     .x = pesa_link,
     .f = function(.x){
+      pesa_year <- as.numeric(
+        substr(stringr::str_extract(.x, "(?<=PESA_|pesa_).*"), 1, 4)
+      )
+      
+      if (is.na(pesa_year)) {
+        stop("Could not identify PESA year from URL: ", .x)
+      }
+      
+      # Check future releases: confirm Table 1.6 still contains
+      # the comparable current-price capital DEL figures.
+      sheet_pattern <- if (pesa_year >= 2026) {
+        "1[._]6$"
+      } else {
+        "1.8$|1_8$"
+      }
       if(tools::file_ext(.x) == 'ods'){
         temp <- tempfile()
         utils::download.file(.x, temp,mode='wb')
         sheet<-readODS::list_ods_sheets(temp)
-        sheet_name <- sheet[grepl(pattern='1.8$|1_8$',sheet)]
+        sheet_name <- sheet[grepl(sheet_pattern, sheet)]
         data <- readODS::read_ods(temp, sheet = sheet_name)
         unlink(temp, recursive = T)
         return(as.data.frame(data))
       } else {
-        data <- Rpublic::extract_sheets(.x,'1.8$|1_8$')
+        data <- Rpublic::extract_sheets(.x, sheet_pattern)
         return(as.data.frame(data))
       }
     }
@@ -115,9 +130,33 @@ GetData <- function(){
       
       out <- .x
       names(out) <- .x[3,]
+      pesa_year <- as.numeric(
+        substr(stringr::str_extract(.y, "(?<=PESA_|pesa_).*"), 1, 4)
+      )
       
+      if (pesa_year >= 2026) {
+        # Table 1.6 also contains capital AME.
+        ame_start <- which(
+          grepl(
+            "^\\s*Capital\\s+departmental\\s+AME\\s+by\\s+departmental\\s+group\\s*$",
+            as.character(out[[1]]),
+            ignore.case = TRUE
+          )
+        )
+        
+        if (length(ame_start) != 1 || ame_start <= 1) {
+          stop("Could not identify the capital AME section in: ", .y)
+        }
+        
+        out <- out[seq_len(ame_start - 1), , drop = FALSE]
+      }
+      
+      # Preserve the original column removal for older tables only.
+      if (pesa_year < 2026) {
+        out <- out[, -c(10:12), drop = FALSE]
+      }
       dat <- out |> 
-        _[-c(1:5),-c(10:12)] |> 
+        _[-c(1:5), ] |>
         janitor::clean_names() |> 
         dplyr::rename('department'=1) |> 
         tidyr::pivot_longer(cols = -department,names_to='date',values_to='values') |> 
@@ -139,16 +178,31 @@ GetData <- function(){
   pesa_link_tdel2 <- purrr::map(
     .x = pesa_link,
     .f = function(.x){
+      pesa_year <- as.numeric(
+        substr(stringr::str_extract(.x, "(?<=PESA_|pesa_).*"), 1, 4)
+      )
+      
+      if (is.na(pesa_year)) {
+        stop("Could not identify PESA year from URL: ", .x)
+      }
+      
+      # Check future releases: confirm Table 1.9 still contains
+      # the comparable current-price total DEL figures.
+      sheet_pattern <- if (pesa_year >= 2026) {
+        "1[._]9$"
+      } else {
+        "1.10$|1_10$|1.10a$"
+      }
       if(tools::file_ext(.x) == 'ods'){
         temp <- tempfile()
         utils::download.file(.x, temp,mode='wb')
         sheet<-readODS::list_ods_sheets(temp)
-        sheet_name <- sheet[grepl(pattern='1.10|1_10',sheet)]
+        sheet_name <- sheet[grepl(pattern=sheet_pattern, sheet)]
         data <- readODS::read_ods(temp, sheet = sheet_name)
         unlink(temp, recursive = T)
         return(as.data.frame(data))
       } else {
-        data <- Rpublic::extract_sheets(.x,'1.10$|1_10$|1.10a$')
+        data <- Rpublic::extract_sheets(.x, sheet_pattern)
         return(as.data.frame(data))
       }
     }
@@ -162,9 +216,16 @@ GetData <- function(){
       
       out <- .x
       names(out) <- .x[3,]
+      pesa_year <- as.numeric(
+        substr(stringr::str_extract(.y, "(?<=PESA_|pesa_).*"), 1, 4)
+      )
       
+      # Preserve the original column removal for older tables only.
+      if (pesa_year < 2026) {
+        out <- out[, -c(9:11), drop = FALSE]
+      }
       dat <- out |> 
-        _[-c(1:5),-c(9:11)] |> 
+        _[-c(1:5), ] |> 
         janitor::clean_names() |> 
         dplyr::rename('department'=1) |> 
         tidyr::pivot_longer(cols = -department,names_to='date',values_to='values') |> 
