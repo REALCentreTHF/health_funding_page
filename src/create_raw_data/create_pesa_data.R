@@ -16,16 +16,31 @@ GetData <- function(){
   pesa_link2 <- purrr::map(
     .x = pesa_link,
     .f = function(.x){
+      pesa_year <- as.numeric(
+        substr(stringr::str_extract(.x, "(?<=PESA_|pesa_).*"), 1, 4)
+      )
+      
+      if (is.na(pesa_year)) {
+        stop("Could not identify PESA year from URL: ", .x)
+      }
+      
+      # Check each future PESA release: confirm that Table 1.3
+      # still contains the comparable resource DEL figures.
+      sheet_pattern <- if (pesa_year >= 2026) {
+        "1[._]3$"
+      } else {
+        "1[._]5$"
+      }
       if(tools::file_ext(.x) == 'ods'){
         temp <- tempfile()
         utils::download.file(.x, temp,mode='wb')
         sheet<-readODS::list_ods_sheets(temp)
-        sheet_name <- sheet[grepl(pattern='1.5|1_5',sheet)]
+        sheet_name <- sheet[grepl(pattern= sheet_pattern, sheet)]
         data <- readODS::read_ods(temp, sheet = sheet_name)
         unlink(temp, recursive = T)
         return(as.data.frame(data))
       } else {
-        data <- Rpublic::extract_sheets(.x,'1.5|1_5')
+        data <- Rpublic::extract_sheets(.x,sheet_pattern)
         return(as.data.frame(data))
       }
     }
@@ -38,6 +53,26 @@ GetData <- function(){
     .f = function(.x,.y){
       out <- .x
       names(out) <- .x[3,]
+      pesa_year <- as.numeric(
+        substr(stringr::str_extract(.y, "(?<=PESA_|pesa_).*"), 1, 4)
+      )
+      
+      if (pesa_year >= 2026) {
+        # Table 1.3 also contains resource AME. Stop before that section.
+        ame_start <- which(
+          grepl(
+            "^\\s*Resource\\s+departmental\\s+AME\\s+by\\s+departmental\\s+group\\s*$",
+            as.character(out[[1]]),
+            ignore.case = TRUE
+          )
+        )
+        
+        if (length(ame_start) != 1 || ame_start <= 1) {
+          stop("Could not identify the resource AME section in: ", .y)
+        }
+        
+        out <- out[seq_len(ame_start - 1), , drop = FALSE]
+      }
       dat <- out |> 
         _[-c(1:5),] |> 
         janitor::clean_names() |> 
