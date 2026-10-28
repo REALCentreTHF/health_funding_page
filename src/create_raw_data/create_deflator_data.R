@@ -1,5 +1,6 @@
 CreateData <- function(){
-efo_link1<-Rpublic::extract_links(efo_link,paste0('efo/economic-and-fiscal-outlook-',tolower(latest_efo_month)))
+#efo_link1<-Rpublic::extract_links(efo_link,paste0('efo/economic-and-fiscal-outlook-',tolower(latest_efo_month)))
+efo_link1 <- efo_report_url  
 efo_link2 <- Rpublic::extract_links(efo_link1,'detailed-forecast-tables-economy')
 
 dat <- Rpublic::extract_sheets(
