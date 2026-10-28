@@ -4,8 +4,8 @@
 #delete any of these everything breaks. 
 latest_efo_month <- 'October'      ### UPDATED
 latest_efs_month <- 'September'      
-latest_pop_year <- '2023'         
-latest_pop_proj_year <- '2022'   ### NOT YET UPDATED
+latest_pop_year <- '2025'   #was 2023      
+latest_pop_proj_year <- '2024'   ### NOT YET UPDATED. was 2022
 latest_pesa_year <- '2025'     
 latest_budget_name <- 'Autumn Budget'  
 baseline_year <- 2026   #UPDATED
