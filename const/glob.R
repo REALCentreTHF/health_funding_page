@@ -2,26 +2,26 @@
 
 #These are the basic parameters that need to go into the list.
 #delete any of these everything breaks. 
-latest_efo_month <- 'March'
-latest_efs_month <- 'September'
-latest_pop_year <- '2023'
-latest_pop_proj_year <- '2022'
-latest_pesa_year <- '2025'
-latest_budget_name <- 'Autumn Budget'
-baseline_year <- 2025
-latest_efo_year <- 2025
+latest_efo_month <- 'October'      ### UPDATED
+latest_efs_month <- 'September'      
+latest_pop_year <- '2023'         
+latest_pop_proj_year <- '2022'   ### NOT YET UPDATED
+latest_pesa_year <- '2025'     
+latest_budget_name <- 'Autumn Budget'  
+baseline_year <- 2026   #UPDATED
+latest_efo_year <- 2025  
 latest_outtrun_year <- 2023
 #Adjustments 
-pensions_adjustment_value = 2.851
-pensions_adjustment_value_2 = 1.965
-nics_adjustment_value <- 1.427
+pensions_adjustment_value = 2.851   
+pensions_adjustment_value_2 = 1.965 
+nics_adjustment_value <- 1.427  
 
 #FORCED inputs for posterity
 #Date = Fall 2024 Budget. These can either be extracted automatically or inputted
 #in manually. i have kept the manual as default just to check. if this does not
 #match the actuals extracted, it should throw an error.
-planned_cdel <- c(11600,13600,14000,13800,14800) #updated
-planned_dhsc_rdel <- c(193200,204500,211400,221300,231200) #updated
+planned_cdel <- c(11500,13300,13800,13500,14500) # 11600,13600,14000,13800,14800 (previous)
+planned_dhsc_rdel <- c(193200,204100,212500,221200,231100) #193200,204500,211400,221300,231200 (previous)
 planned_nhs_rdel <- c(186800,195600,204900,215400,226100)
 adjustments <- c(rep(0,12),-1110,-1210,rep(-1610,2))
 #adjustments
@@ -48,6 +48,7 @@ efs_url <- 'https://obr.uk/download/september-2024-fiscal-risks-and-sustainabili
 
 # Non-adjustable globals ---------
 efo_link <- 'https://obr.uk/efo/'
+efo_report_url <- "https://obr.uk/efo/economic-and-fiscal-outlook-october-2026/"  # this has been added to get the link to work
 pop_link <- 'https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales'
 pop_proj_link <- 'https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationprojections/datasets/tablea11principalprojectionuksummary'
 pesa_url <- 'https://www.gov.uk/government/collections/public-expenditure-statistical-analyses-pesa'
