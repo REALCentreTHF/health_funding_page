@@ -21,7 +21,7 @@ GetData <- function(){
     )
   
   test2 <- output_budget_data |> 
-    dplyr::filter(budget_type == 'nhse_rdel_less_pensions') |> 
+    dplyr::filter(budget_type == 'dhsc_rdel_less_pensions') |>   
     dplyr::select(date,real_values,cash_values) |> 
     dplyr::left_join(test) |> 
     dplyr::mutate(
