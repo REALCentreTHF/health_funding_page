@@ -185,11 +185,25 @@ View(real_growth_unadjusted)
 
 
 
-View(real_growth_2025_2028)
+
 
 write.csv(fig_3,'output/fig_3.csv')
 write.csv(fig_4,'output/fig_4.csv')
 write.csv(deflator,'output/deflator.csv')
+
+table_1 <- table_1 |>
+  dplyr::left_join(
+    real_growth_2025_2028 |>
+      dplyr::select(funding_type, cagr_percent),
+    by = "funding_type"
+  )
+
+View(table_1)
+
+write.csv(table_1, 'output/table_1_updated.csv')
+write.csv(fig_3, 'output/figure_2_updated.csv')
+write.csv(fig_4, 'output/figure_3_updated.csv')
+
 
 #Clean up environment
 rm(list=ls()[!grepl(pattern='output|fig',x=ls())])
