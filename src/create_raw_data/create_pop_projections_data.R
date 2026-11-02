@@ -1,5 +1,4 @@
 CreateData <- function() {
-  #dat <- read.csv('const/pop_proj_data.csv') |> 
   dat <- readxl::read_excel(
     "const/en_ppp_machine_readable.xlsx",
     sheet = "Population"

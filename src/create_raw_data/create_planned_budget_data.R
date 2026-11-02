@@ -107,7 +107,7 @@ dat <- expand.grid(
 
 dat$`DHSC TDEL` <- planned_dhsc_tdel
 dat$CDEL <- planned_cdel
-dat$`NHSE RDEL` <- planned_nhs_rdel
+# dat$`NHSE RDEL` <- planned_nhs_rdel
 dat$`DHSC RDEL` <- planned_dhsc_rdel
 
 dat2 <- dat |> 

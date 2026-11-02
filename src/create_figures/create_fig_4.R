@@ -44,6 +44,21 @@ GetData <- function(){
     dplyr::mutate(index = values / begin_val) |> 
     dplyr::select(date,names,index) |> 
     tidyr::pivot_wider(names_from=names,values_from=index)
+  
+  # Calculate CAGR
+  start_year <- 2013
+  end_year <- 2028
+  
+  # Calculate CAGR for columns B–E
+  cagr <- sapply(test3[, 2:5], function(x) {
+    start_value <- x[test3$date == start_year]
+    end_value <- x[test3$date == end_year]
+    
+    (end_value / start_value)^(1 / (end_year - start_year)) - 1
+  })
+  
+  # Display CAGR as percentages
+  round(cagr * 100, 2)
 
   return(test3)
 }

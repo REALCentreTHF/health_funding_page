@@ -140,5 +140,3 @@ GetData <- function() {
 
 old_deflator_series <- GetData()
 rm(GetData)
-
-View(old_deflator_series)

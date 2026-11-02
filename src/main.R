@@ -1,13 +1,21 @@
-#These need to run in advance of everything as global options?
+# This is the main file to run for each health funding page update
+library(tidyverse)
 source('const/glob.R')
 source('src/functions.R')
+
+# Set to TRUE if you are running the entire pipeline
+# This saves outputs into a timestamped folder in outputs/
+use_timestamp <- TRUE
+
+# Base output directory
+output_dir <- "output"
 
 #Step 1: Read in the raw data
 tryCatch(
   purrr::map(.x = fs::dir_ls('src/create_raw_data'),
              .f = source),
   error = function(e){
-    cat("An error occurred:", 
+    stop("An error occurred:", 
         conditionMessage(e), 
         "\n",
         'This means analysis cannot be run due to an error in the raw data collection')}
@@ -18,7 +26,7 @@ tryCatch(
   purrr::map(.x = fs::dir_ls('src/create_analysis'),
              .f = source),
   error = function(e){
-    cat("An error occurred:", 
+    stop("An error occurred:", 
         conditionMessage(e),
         "\n",
         'This means the figures cannot be run due to an error in the analysis')}
@@ -29,181 +37,21 @@ tryCatch(
   purrr::map(.x = fs::dir_ls('src/create_figures'),
              .f = source),
   error = function(e){
-    cat("An error occurred:", 
+    stop("An error occurred:", 
         conditionMessage(e),
         "\n",
         'This means the figures cannot be run due to an error in /src/create_figures/')}
 )
 
-write.csv(output_budget_data,'output/budget_data.csv')
-# Nominal figures: unadjusted budgets, using cash_values.
-nominal_data <- output_budget_data |>
-  dplyr::ungroup() |>
-  dplyr::filter(
-    date %in% 2025:2028,
-    budget_type %in% c("dhsc_rdel", "cdel", "dhsc_tdel")
-  ) |>
-  dplyr::transmute(
-    funding_type = dplyr::recode(
-      budget_type,
-      dhsc_rdel = "DHSC revenue",
-      cdel = "DHSC capital",
-      dhsc_tdel = "DHSC total"
-    ),
-    date,
-    basis = "Nominal",
-    value = cash_values / 1000
-  )
+# Step 4: Export outputs
+if (use_timestamp) {
+  timestamp <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
+  output_dir <- file.path(output_dir, timestamp)
+}
 
-# Real figures: adjusted revenue/total budgets, using real_values.
-real_data <- output_budget_data |>
-  dplyr::ungroup() |>
-  dplyr::filter(
-    date %in% 2025:2028,
-    budget_type %in% c(
-      "dhsc_rdel_less_pensions",
-      "cdel",
-      "dhsc_tdel_less_pensions"
-    )
-  ) |>
-  dplyr::transmute(
-    funding_type = dplyr::recode(
-      budget_type,
-      dhsc_rdel_less_pensions = "DHSC revenue",
-      cdel = "DHSC capital",
-      dhsc_tdel_less_pensions = "DHSC total"
-    ),
-    date,
-    basis = "Real",
-    value = real_values / 1000
-  )
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
-# Combine and arrange into a table.
-table_1 <- dplyr::bind_rows(nominal_data, real_data) |>
-  dplyr::mutate(
-    financial_year = paste0(date, "/", substr(date + 1, 3, 4)),
-    funding_type = factor(
-      funding_type,
-      levels = c("DHSC revenue", "DHSC capital", "DHSC total")
-    )
-  ) |>
-  dplyr::arrange(basis, date) |>
-  dplyr::select(funding_type, basis, financial_year, value) |>
-  tidyr::pivot_wider(
-    names_from = c(basis, financial_year),
-    values_from = value,
-    names_glue = "{basis}_{financial_year}"
-  ) |>
-  dplyr::arrange(funding_type)
+write.csv(table_1, file.path(output_dir, 'table_1_updated.csv'))
+write.csv(fig_3, file.path(output_dir, 'figure_2_updated.csv'))
+write.csv(fig_4, file.path(output_dir, 'figure_3_updated.csv'))
 
-View(table_1)
-
-
-table_1_unadjusted <- output_budget_data |>
-  dplyr::ungroup() |>
-  dplyr::filter(
-    date %in% 2025:2028,
-    budget_type %in% c("dhsc_rdel", "cdel", "dhsc_tdel")
-  ) |>
-  dplyr::transmute(
-    funding_type = dplyr::recode(
-      budget_type,
-      dhsc_rdel = "DHSC revenue",
-      cdel = "DHSC capital",
-      dhsc_tdel = "DHSC total"
-    ),
-    financial_year = paste0(date, "/", substr(date + 1, 3, 4)),
-    Nominal = cash_values / 1000,
-    Real = real_values / 1000
-  ) |>
-  tidyr::pivot_longer(
-    cols = c(Nominal, Real),
-    names_to = "basis",
-    values_to = "value"
-  ) |>
-  dplyr::mutate(
-    funding_type = factor(
-      funding_type,
-      levels = c("DHSC revenue", "DHSC capital", "DHSC total")
-    )
-  ) |>
-  dplyr::arrange(basis, financial_year) |>
-  tidyr::pivot_wider(
-    names_from = c(basis, financial_year),
-    values_from = value,
-    names_glue = "{basis}_{financial_year}"
-  ) |>
-  dplyr::arrange(funding_type)
-
-View(table_1_unadjusted)
-
-write.csv(output_cagr_table,'output/cagr_table.csv')
-real_growth_2025_2028 <- output_cagr_table |>
-  dplyr::ungroup() |>
-  dplyr::filter(
-    start_year == 2025,
-    end_year == 2028,
-    money == "real_values",
-    budget_type %in% c(
-      "dhsc_rdel_less_pensions",
-      "cdel",
-      "dhsc_tdel_less_pensions"
-    )
-  ) |>
-  dplyr::transmute(
-    funding_type = dplyr::recode(
-      budget_type,
-      dhsc_rdel_less_pensions = "DHSC revenue",
-      cdel = "DHSC capital",
-      dhsc_tdel_less_pensions = "DHSC total"
-    ),
-    cagr_percent = cagr * 100
-  )
-
-real_growth_unadjusted <- output_cagr_table |>
-  dplyr::ungroup() |>
-  dplyr::filter(
-    start_year == 2025,
-    end_year == 2028,
-    money == "real_values",
-    budget_type %in% c("dhsc_rdel", "cdel", "dhsc_tdel")
-  ) |>
-  dplyr::transmute(
-    funding_type = dplyr::recode(
-      budget_type,
-      dhsc_rdel = "DHSC revenue",
-      cdel = "DHSC capital",
-      dhsc_tdel = "DHSC total"
-    ),
-    start_year_value,
-    end_year_value,
-    cagr_percent = cagr * 100
-  )
-
-View(real_growth_unadjusted)
-
-
-
-
-
-
-write.csv(fig_3,'output/fig_3.csv')
-write.csv(fig_4,'output/fig_4.csv')
-write.csv(deflator,'output/deflator.csv')
-
-table_1 <- table_1 |>
-  dplyr::left_join(
-    real_growth_2025_2028 |>
-      dplyr::select(funding_type, cagr_percent),
-    by = "funding_type"
-  )
-
-View(table_1)
-
-write.csv(table_1, 'output/table_1_updated.csv')
-write.csv(fig_3, 'output/figure_2_updated.csv')
-write.csv(fig_4, 'output/figure_3_updated.csv')
-
-
-#Clean up environment
-rm(list=ls()[!grepl(pattern='output|fig',x=ls())])

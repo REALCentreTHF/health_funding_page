@@ -3,11 +3,11 @@
 #These are the basic parameters that need to go into the list.
 #delete any of these everything breaks. 
 latest_efo_month <- 'October'      ### UPDATED
-latest_efs_month <- 'September'      
+# latest_efs_month <- 'September'      
 latest_pop_year <- '2025'   #was 2023      
-latest_pop_proj_year <- '2024'   ### NOT YET UPDATED. was 2022
-latest_pesa_year <- '2025'     
-latest_budget_name <- 'Autumn Budget'  
+# latest_pop_proj_year <- '2024'   ### NOT YET UPDATED. was 2022
+# latest_pesa_year <- '2025'     
+# latest_budget_name <- 'Autumn Budget'  
 baseline_year <- 2026   #UPDATED
 latest_efo_year <- 2025  
 latest_outtrun_year <- 2023
@@ -22,9 +22,8 @@ nics_adjustment_value <- 1.427
 #match the actuals extracted, it should throw an error.
 planned_cdel <- c(11500,13300,13800,13500,14500) # 11600,13600,14000,13800,14800 (previous)
 planned_dhsc_rdel <- c(193200,204100,212500,221200,231100) #193200,204500,211400,221300,231200 (previous)
-planned_nhs_rdel <- c(186800,195600,204900,215400,226100)
-adjustments <- c(rep(0,12),-1110,-1210,rep(-1610,2))
-#adjustments
+# planned_nhs_rdel <- c(186800,195600,204900,215400,226100)
+adjustments <- c(rep(0,12), 430,-406,rep(-1610,2))
 planned_dhsc_tdel <- planned_cdel + planned_dhsc_rdel 
 
 
@@ -47,8 +46,8 @@ fig_3_max_year <- 2019
 efs_url <- 'https://obr.uk/download/september-2024-fiscal-risks-and-sustainability-charts-and-tables-chapter-3/?tmstv=1790974956'
 
 # Non-adjustable globals ---------
-efo_link <- 'https://obr.uk/efo/'
-efo_report_url <- "https://obr.uk/efo/economic-and-fiscal-outlook-october-2026/"  # this has been added to get the link to work
+# efo_link <- 'https://obr.uk/efo/'
+efo_report_url <- "https://obr.uk/efo/economic-and-fiscal-outlook-october-2026/"
 pop_link <- 'https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales'
 pop_proj_link <- 'https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationprojections/datasets/tablea11principalprojectionuksummary'
 pesa_url <- 'https://www.gov.uk/government/collections/public-expenditure-statistical-analyses-pesa'
@@ -56,5 +55,5 @@ old_deflator_url <- 'https://www.gov.uk/government/collections/gdp-deflators-at-
 historic_dhsc_tdel_url <- 'https://researchbriefings.files.parliament.uk/documents/SN00724/CBP0724-expenditure-tables.xlsx'
 
 #need this for everything
-source('const/disclaimer.R')
-source('const/healthcare_funding_page.R')
+#source('const/disclaimer.R')
+#source('const/healthcare_funding_page.R')

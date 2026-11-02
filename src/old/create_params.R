@@ -1,3 +1,6 @@
+# Produces a flat named list of every value, difference, and growth rate
+# Meant for filling in Jinja text template (not used)
+
 GetData <- function(){
 
 map_list <- output_cagr_table |> 
