@@ -12,7 +12,7 @@ output_dir <- "output"
 
 #Step 1: Read in the raw data
 tryCatch(
-  purrr::map(.x = fs::dir_ls('src/create_raw_data'),
+  purrr::walk(.x = fs::dir_ls('src/create_raw_data'),
              .f = source),
   error = function(e){
     stop("An error occurred:", 
@@ -23,7 +23,7 @@ tryCatch(
   
 #Step 2: Create the analysis associated
 tryCatch(
-  purrr::map(.x = fs::dir_ls('src/create_analysis'),
+  purrr::walk(.x = fs::dir_ls('src/create_analysis'),
              .f = source),
   error = function(e){
     stop("An error occurred:", 
@@ -34,7 +34,7 @@ tryCatch(
 
 #Step 3: Create the figures
 tryCatch(
-  purrr::map(.x = fs::dir_ls('src/create_figures'),
+  purrr::walk(.x = fs::dir_ls('src/create_figures'),
              .f = source),
   error = function(e){
     stop("An error occurred:", 
@@ -52,6 +52,9 @@ if (use_timestamp) {
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
 write.csv(table_1, file.path(output_dir, 'table_1_updated.csv'))
-write.csv(fig_3, file.path(output_dir, 'figure_2_updated.csv'))
-write.csv(fig_4, file.path(output_dir, 'figure_3_updated.csv'))
+write.csv(fig_2, file.path(output_dir, 'figure_2_updated.csv'))
+write.csv(fig_3, file.path(output_dir, 'figure_3_updated.csv'))
+
+# CAGR for Figure 3
+round(fig3_cagr * 100, 2)
 

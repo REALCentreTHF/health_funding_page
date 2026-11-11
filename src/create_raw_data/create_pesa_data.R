@@ -78,8 +78,7 @@ GetData <- function(){
         janitor::clean_names() |> 
         dplyr::rename('department'=1) |> 
         tidyr::pivot_longer(cols = -department,names_to='date',values_to='values') |> 
-        dplyr::mutate(type = 'fyear',
-                      pod = 'DHSC RDEL',
+        dplyr::mutate(pod = 'dhsc_rdel',
                       date = as.numeric(substr(date,2,5))) |> 
         tidyr::drop_na() |> 
         dplyr::mutate(pesa_year = substr(stringr::str_extract(.y, "(?<=PESA_|pesa_).*"),1,4),
@@ -160,9 +159,8 @@ GetData <- function(){
         janitor::clean_names() |> 
         dplyr::rename('department'=1) |> 
         tidyr::pivot_longer(cols = -department,names_to='date',values_to='values') |> 
-        dplyr::mutate(values = as.numeric(values),
-                      type = 'fyear',
-                      pod = 'CDEL',
+        dplyr::mutate(values = as.numeric(values),,
+                      pod = 'dhsc_cdel',
                       date = as.numeric(substr(date,2,5))) |> 
         tidyr::drop_na() |> 
         dplyr::filter(values >= 3000) |> 
@@ -230,8 +228,7 @@ GetData <- function(){
         dplyr::rename('department'=1) |> 
         tidyr::pivot_longer(cols = -department,names_to='date',values_to='values') |> 
         dplyr::mutate(values = as.numeric(values),
-                      type = 'fyear',
-                      pod = 'DHSC TDEL',
+                      pod = 'dhsc_tdel',
                       date = as.numeric(substr(date,2,5))) |> 
         tidyr::drop_na() |> 
         dplyr::mutate(pesa_year = substr(stringr::str_extract(.y, "(?<=PESA_|pesa_).*"),1,4),
@@ -246,9 +243,11 @@ GetData <- function(){
   ) |> 
     dplyr::filter(
       grepl(pattern='health|Health',x=department)
-    ) |> 
-    dplyr::group_by(pod,date,type) |> 
-    dplyr::filter(pesa_year == max(pesa_year))
+    ) |>
+    # Get rid of duplicate values for each year
+    dplyr::group_by(pod,date) |> 
+    dplyr::filter(pesa_year == max(pesa_year)) |>
+    dplyr::ungroup()
   
   return(final_output)
   

@@ -1,20 +1,74 @@
 GetData <- function(){
-  real_budget_table <- output_budget_data |> 
-    dplyr::select(date,budget_type,real_values) |> 
-    tidyr::pivot_wider(names_from = 'budget_type',values_from='real_values') |> 
-    dplyr::select(!c(pensions,dhsc_rdel_less_pensions,nhse_rdel_less_pensions))
   
-  cash_budget_table <- output_budget_data |> 
-    dplyr::select(date,budget_type,cash_values) |> 
-    tidyr::pivot_wider(names_from = 'budget_type',values_from='cash_values') |> 
-    dplyr::select(!c(pensions,dhsc_rdel_less_pensions,nhse_rdel_less_pensions))
+  dat1 <- output_budget_data |> 
+    dplyr::filter(budget_type == 'dhsc_tdel_less_pensions') |> 
+    dplyr::select(date,cash_values) |> 
+    dplyr::rename(dhsc_tdel = cash_values) |> 
+    dplyr::mutate(dhsc_tdel = dhsc_tdel / 1000) |> 
+    dplyr::filter(date > 2014)
   
-  return(
-    list(
-      cash_table = cash_budget_table,
-      real_table = real_budget_table
+  dat2 <- purrr::map(
+    .x = govt_list,
+    .f = function(.x){
+      out <- historic_dhsc_tdel_data |> 
+        dplyr::filter(date <= 2014) |> 
+        rbind(dat1) |> 
+        dplyr::filter(date %in% .x) |> 
+        dplyr::rowwise() |> 
+        CashToReal(
+          deflator_data = combined_deflator_series,
+          baseline_year = baseline_year,
+          mutate_col = 'dhsc_tdel'
+        ) 
+        
+      return(out)
+    }
+  ) |> 
+    dplyr::bind_rows(
+      .id = 'id'
+    ) |> 
+    dplyr::rename(
+      govt_simple='id'
     )
-  )
+  
+  max_precovid_value <- (dat2[dat2$date == fig_2_max_year,]$dhsc_tdel / dat2[dat2$date == min(dat2$date),]$dhsc_tdel)^(1/(fig_2_max_year - min(dat2$date)-1))-1
+  
+  dat3 <- dat2 |> 
+    dplyr::group_by(govt_simple) |> 
+    dplyr::filter(date == min(date)|
+                  date == max(date)) |> 
+    dplyr::mutate(
+      year_end_start = dplyr::case_when(
+        date == min(date) ~ 'start_govt',
+        date == max(date) ~ 'end_govt'
+      )
+    ) |> 
+    dplyr::select(date,dhsc_tdel,govt_simple,year_end_start)
+  
+  dat4 <- dat3 |> 
+    dplyr::filter(year_end_start=='start_govt') |> 
+    dplyr::rename(start_tdel=dhsc_tdel,
+                  start_date = date) |> 
+    dplyr::select(!year_end_start) |> 
+    dplyr::left_join(dat3 |> 
+                       dplyr::filter(year_end_start=='end_govt') |> 
+                       dplyr::rename(end_tdel=dhsc_tdel,
+                                     end_date = date) |> 
+                       dplyr::select(!year_end_start),
+                     by = c('govt_simple')) |> 
+    dplyr::rowwise() |> 
+    dplyr::mutate(
+      cagr = (end_tdel /start_tdel)^(1/(end_date-start_date))-1
+    ) |> 
+    dplyr::add_row(
+      start_date = 1979,
+      start_tdel = 0,
+      govt_simple = 'Long-run Pre-Covid',
+      end_date = fig_2_max_year,
+      end_tdel = 0,
+      cagr = max_precovid_value
+    )
+  return(dat4)
 }
 
 fig_2 <- GetData()

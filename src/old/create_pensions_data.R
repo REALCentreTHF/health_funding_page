@@ -8,8 +8,8 @@ pension_adjustments <- expand.grid(
 ) |> 
   dplyr::mutate(
     values=dplyr::case_when(
-      date >=2025 ~ (pensions_adjustment_value + pensions_adjustment_value_2)*1000,
+      date >=2025 ~ (pension_2019_adjustment_value + pension_2024_adjustment_value)*1000,
       date <= 2018 ~ 0,
-      T ~ (pensions_adjustment_value)*1000
+      T ~ (pension_2019_adjustment_value)*1000
     )
   )

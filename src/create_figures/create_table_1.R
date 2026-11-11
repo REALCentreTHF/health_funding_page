@@ -4,13 +4,13 @@ GetData <- function(){
     dplyr::ungroup() |>
     dplyr::filter(
       date %in% 2025:2028,
-      budget_type %in% c("dhsc_rdel", "cdel", "dhsc_tdel")
+      budget_type %in% c("dhsc_rdel", "dhsc_cdel", "dhsc_tdel")
     ) |>
     dplyr::transmute(
       funding_type = dplyr::recode(
         budget_type,
         dhsc_rdel = "DHSC revenue",
-        cdel = "DHSC capital",
+        dhsc_cdel = "DHSC capital",
         dhsc_tdel = "DHSC total"
       ),
       date,
@@ -25,7 +25,7 @@ GetData <- function(){
       date %in% 2025:2028,
       budget_type %in% c(
         "dhsc_rdel_less_pensions",
-        "cdel",
+        "dhsc_cdel",
         "dhsc_tdel_less_pensions"
       )
     ) |>
@@ -33,7 +33,7 @@ GetData <- function(){
       funding_type = dplyr::recode(
         budget_type,
         dhsc_rdel_less_pensions = "DHSC revenue",
-        cdel = "DHSC capital",
+        dhsc_cdel = "DHSC capital",
         dhsc_tdel_less_pensions = "DHSC total"
       ),
       date,
@@ -63,13 +63,13 @@ GetData <- function(){
     dplyr::ungroup() |>
     dplyr::filter(
       date %in% 2025:2028,
-      budget_type %in% c("dhsc_rdel", "cdel", "dhsc_tdel")
+      budget_type %in% c("dhsc_rdel", "dhsc_cdel", "dhsc_tdel")
     ) |>
     dplyr::transmute(
       funding_type = dplyr::recode(
         budget_type,
         dhsc_rdel = "DHSC revenue",
-        cdel = "DHSC capital",
+        dhsc_cdel = "DHSC capital",
         dhsc_tdel = "DHSC total"
       ),
       financial_year = paste0(date, "/", substr(date + 1, 3, 4)),
@@ -103,7 +103,7 @@ GetData <- function(){
       money == "real_values",
       budget_type %in% c(
         "dhsc_rdel_less_pensions",
-        "cdel",
+        "dhsc_cdel",
         "dhsc_tdel_less_pensions"
       )
     ) |>
@@ -111,7 +111,7 @@ GetData <- function(){
       funding_type = dplyr::recode(
         budget_type,
         dhsc_rdel_less_pensions = "DHSC revenue",
-        cdel = "DHSC capital",
+        dhsc_cdel = "DHSC capital",
         dhsc_tdel_less_pensions = "DHSC total"
       ),
       cagr_percent = cagr * 100
@@ -123,13 +123,13 @@ GetData <- function(){
       start_year == 2025,
       end_year == 2028,
       money == "real_values",
-      budget_type %in% c("dhsc_rdel", "cdel", "dhsc_tdel")
+      budget_type %in% c("dhsc_rdel", "dhsc_cdel", "dhsc_tdel")
     ) |>
     dplyr::transmute(
       funding_type = dplyr::recode(
         budget_type,
         dhsc_rdel = "DHSC revenue",
-        cdel = "DHSC capital",
+        dhsc_cdel = "DHSC capital",
         dhsc_tdel = "DHSC total"
       ),
       start_year_value,

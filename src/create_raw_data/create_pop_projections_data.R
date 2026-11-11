@@ -14,10 +14,9 @@ CreateData <- function() {
     dplyr::mutate(
       country = 'E',
       type = 'midyear',
-      #date = as.integer(substr(date,2,5))
       date = as.integer(date)
     ) |> 
-    dplyr::filter(date > 2025) # was 2023
+    dplyr::filter(date >= baseline_year) 
 
   return(dat)
 }
