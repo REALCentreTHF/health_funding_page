@@ -1,5 +1,13 @@
 # This is the main file to run for each health funding page update
-library(tidyverse)
+
+# Dependencies
+library(tidyr)
+library(dplyr)
+library(readxl)
+library(readODS)
+library(janitor)
+library(purrr)
+library(data.table)
 source('const/glob.R')
 source('src/functions.R')
 

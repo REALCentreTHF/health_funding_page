@@ -1,5 +1,3 @@
-install.packages('jinjar')
-library(jinjar)
 
 params <- list(
 data=2019
@@ -13,4 +11,4 @@ data <- GetCAGR(data=output_cagr_table,
              cagr_money='real_values',
              cagr_budget_type='dhsc_tdel')
 
-jinjar::render(test, !!!params)
+
